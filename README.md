@@ -6,6 +6,8 @@ This is the frontend for the **MyPokedex** project, a React-based app that conne
 
 For the backend API, check out the [MyPokedex-Backend](https://github.com/iameddysmith/MyPokedex-Backend).
 
+Link to my GitHub Pages [MyPokedex](https://iameddysmith.github.io/MyPokedex/).
+
 The backend server is currently set up to run on `http://localhost:3001`.
 
 ## Features
