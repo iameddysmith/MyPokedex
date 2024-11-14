@@ -1,0 +1,89 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  z-index: 999;
+}
+
+.modal_open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal__content {
+  background-color: #fff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  padding: 28px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.modal__title {
+  font-family: "Cabinet-Bold", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.modal__label {
+  font-family: "Cabinet-Medium", sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.modal__close_btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  background-image: url("../../assets/closeX_btn.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.modal__button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.modal__save-button,
+.modal__secondary-button {
+  font-family: "Cabinet-Bold", sans-serif;
+  border-radius: 4px;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.modal__save-button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+}
+
+.modal__save-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.modal__secondary-button {
+  background-color: #fff;
+  color: #000;
+}

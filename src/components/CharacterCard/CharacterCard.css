@@ -1,0 +1,22 @@
+.character-card {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.character-card__image {
+  width: 96x;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.character-card__name {
+  margin-top: 1px;
+  color: #333;
+  font-size: 12px;
+}
