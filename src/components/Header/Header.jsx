@@ -4,6 +4,7 @@ import headerLogo from "../../assets/mypokedexlogo.png";
 import defaultAvatar from "../../assets/avatar1.png";
 import { Link } from "react-router-dom";
 
+//header
 function Header({ onLoginClick, onSignUpClick }) {
   return (
     <header className="header">

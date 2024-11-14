@@ -2,6 +2,7 @@ import React from "react";
 import "./CharacterCard.css";
 import defaultImage from "../../assets/pokemon-unavailable.png";
 
+//char card
 function CharacterCard({ character, onCardClick }) {
   return (
     <li className="character-card" onClick={onCardClick}>

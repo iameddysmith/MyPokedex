@@ -100,4 +100,5 @@
 
 .item-modal__add-button:hover {
   background-color: #3d7dca;
+  opacity: 0.5;
 }

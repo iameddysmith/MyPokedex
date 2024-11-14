@@ -7,10 +7,8 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import axios from "axios";
+import { register, login, checkToken, updateProfile } from "../../utils/auth";
 import "./App.css";
-
-// per pokemon API documentation rules "Locally cache resources whenever you request them."
-// https://pokeapi.co/docs/v2
 
 const fetchPokemonWithCache = async (type, searchTerm, page) => {
   const cacheKey = `${type}-${searchTerm}-${page}`;
@@ -42,6 +40,27 @@ function App() {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      checkToken(jwt)
+        .then((userData) => {
+          setCurrentUser(userData);
+          setToken(jwt);
+          setIsLoggedIn(true);
+        })
+        .catch((err) => {
+          localStorage.removeItem("jwt");
+          setIsLoggedIn(false);
+        });
+    }
+  }, []);
+
+  const totalPages = Math.ceil(totalResults / 50);
 
   useEffect(() => {
     async function fetchCharacters() {
@@ -53,8 +72,6 @@ function App() {
     }
     fetchCharacters();
   }, [selectedType, searchTerm, page]);
-
-  const totalPages = Math.ceil(totalResults / 50);
 
   const handleNextPage = () => {
     if (page < totalPages) setPage(page + 1);
@@ -88,22 +105,43 @@ function App() {
   };
 
   const handleRegister = (data) => {
-    console.log("Register with:", data);
-    closeRegisterModal();
+    register(data)
+      .then(() => handleLogin({ email: data.email, password: data.password }))
+      .then(closeRegisterModal)
+      .catch((error) => console.error("Registration failed:", error));
   };
 
   const handleLogin = async (credentials) => {
     try {
-      console.log("Login with:", credentials);
+      const res = await login(credentials);
+      localStorage.setItem("jwt", res.token);
+      setToken(res.token);
+      const userData = await checkToken(res.token);
+      setCurrentUser(userData);
+      setIsLoggedIn(true);
       closeLoginModal();
     } catch (error) {
-      console.error("Login failed:", error);
+      const errorMessage = error.message || "Incorrect email or password";
+      console.log("Login failed:", errorMessage);
+      throw new Error(errorMessage);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setCurrentUser(null);
+    setIsLoggedIn(false);
   };
 
   return (
     <div className="page">
-      <Header onLoginClick={openLoginModal} onSignUpClick={openRegisterModal} />
+      <Header
+        onLoginClick={openLoginModal}
+        onSignUpClick={openRegisterModal}
+        onLogout={handleLogout}
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+      />
       <div className="page__content">
         <Sidebar
           onTypeFilterChange={(type) => {

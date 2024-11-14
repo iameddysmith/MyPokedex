@@ -8,6 +8,7 @@ import avatar4 from "../../assets/avatar4.png";
 import avatar5 from "../../assets/avatar5.png";
 import "./RegisterModal.css";
 
+//registermodal
 const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
   const formRef = useRef();
   const avatarOptions = [avatar1, avatar2, avatar3, avatar4, avatar5];

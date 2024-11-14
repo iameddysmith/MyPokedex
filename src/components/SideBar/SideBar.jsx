@@ -6,6 +6,7 @@ function Sidebar({ onTypeFilterChange }) {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState("");
 
+  //sidebar
   useEffect(() => {
     const fetchTypes = async () => {
       try {

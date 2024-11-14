@@ -26,9 +26,8 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
         await onLogin(values);
         setIncorrectPassword(false);
       } catch (err) {
-        if (err.message === "Incorrect email or password") {
-          setIncorrectPassword(true);
-        }
+        setIncorrectPassword(true);
+        console.log("Login failed:", err.message);
       } finally {
         setIsButtonDisabled(false);
       }
@@ -77,8 +76,13 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
         {errors.email}
       </span>
 
-      <label htmlFor="loginModal-password" className="modal__label">
-        Password*
+      <label
+        htmlFor="loginModal-password"
+        className={`modal__label ${
+          incorrectPassword ? "modal__label_error" : ""
+        }`}
+      >
+        {incorrectPassword ? "Incorrect Password" : "Password*"}
         <input
           type="password"
           id="loginModal-password"
@@ -88,15 +92,15 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
           onChange={handleInputChange}
           required
           className={`modal__form-input ${
-            incorrectPassword || errors.password
-              ? "modal__form-input_type_error"
-              : ""
+            incorrectPassword ? "modal__form-input_type_error" : ""
           }`}
         />
       </label>
       <span
         className={`modal__form-input-error ${
-          errors.password ? "modal__form-input-error_visible" : ""
+          errors.password || incorrectPassword
+            ? "modal__form-input-error_visible"
+            : ""
         }`}
         id="loginModal-password-error"
       >

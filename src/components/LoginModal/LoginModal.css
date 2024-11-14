@@ -49,6 +49,7 @@
 
 .modal__form-input_type_error {
   border-bottom-color: #ff4d00;
+  color: #ff4d00;
 }
 
 .modal__label_error {

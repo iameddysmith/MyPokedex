@@ -1,5 +1,6 @@
 import "./Footer.css";
 
+//footer
 function Footer() {
   return (
     <footer className="footer">
