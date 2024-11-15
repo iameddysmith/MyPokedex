@@ -1,0 +1,20 @@
+.footer {
+  font-size: 12px;
+  line-height: 1.2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px;
+  opacity: 0.5;
+  font-family: "Cabinet-Medium", sans-serif;
+}
+
+.footer__text-developer {
+  text-align: left;
+}
+
+.footer__text-disclaimer {
+  text-align: right;
+}
