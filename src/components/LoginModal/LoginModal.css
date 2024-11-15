@@ -1,0 +1,57 @@
+@import "../ModalWithForm/ModalWithForm.css";
+
+.modal__label {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.modal__form-input {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 8px;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding-bottom: 4px;
+  outline: none;
+  font-family: "Cabinet-Bold", sans-serif;
+}
+
+.modal__form-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "Cabinet-Bold", sans-serif;
+}
+
+.modal__form-input-error {
+  color: #ff4d00;
+  font-size: 12px;
+  font-family: "Cabinet-Medium", sans-serif;
+  line-height: 1.2;
+  min-height: 24px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s linear;
+  margin: 0;
+}
+
+.modal__form-input-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal__form-input_type_error {
+  border-bottom-color: #ff4d00;
+  color: #ff4d00;
+}
+
+.modal__label_error {
+  color: #ff4d00;
+}
