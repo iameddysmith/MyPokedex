@@ -4,7 +4,6 @@ import "./CharacterSection.css";
 import nextIcon from "../../assets/next.png";
 import prevIcon from "../../assets/previous.png";
 
-//char section
 function CharacterSection({
   characters = [],
   handleCardClick,

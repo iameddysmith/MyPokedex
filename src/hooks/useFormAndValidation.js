@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-//validation hook
+
 export function useFormAndValidation(formRef, extraValidityCheck = () => true) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});

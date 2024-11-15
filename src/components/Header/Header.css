@@ -4,6 +4,7 @@
   padding: 16px;
   background-color: #3d7dca;
   font-family: "Cabinet-Bold", sans-serif;
+  font-size: 18px;
   line-height: 1.2;
 }
 
@@ -24,38 +25,6 @@
   height: 80px;
 }
 
-.header__nav {
-  display: flex;
-  gap: 20px;
-}
-
-.header__nav-link {
-  text-decoration: none;
-  font-weight: 600;
-  color: #333;
-}
-
-.header__user-actions {
-  display: flex;
-  gap: 12px;
-  margin-left: auto;
-}
-
-.header__login-btn,
-.header__signup-btn {
-  border: none;
-  background: none;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 8px 16px;
-  color: #ffcb05;
-}
-
-.header__login-btn:hover,
-.header__signup-btn:hover {
-  color: #b3a125;
-}
-
 .header__user-actions {
   display: flex;
   align-items: center;
@@ -63,10 +32,48 @@
   margin-left: auto;
 }
 
+.header__btn {
+  border: none;
+  background: none;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  color: #ffcb05;
+  text-decoration: none;
+}
+
+.header__btn:hover {
+  color: #b3a125;
+}
+
+.header__logout-btn {
+  color: #ffcb05;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 16px;
+}
+
+.header__logout-btn:hover {
+  color: #b3a125;
+}
+
+.header__user-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.header__user-name {
+  color: #d2def1;
+}
+
 .header__avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #ccc;
+  background-color: transparent;
 }
-/*/

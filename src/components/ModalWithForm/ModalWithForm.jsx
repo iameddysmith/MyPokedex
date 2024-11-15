@@ -1,7 +1,6 @@
 import React, { useEffect, forwardRef } from "react";
 import "./ModalWithForm.css";
 
-//modalwform
 const ModalWithForm = forwardRef(
   (
     {

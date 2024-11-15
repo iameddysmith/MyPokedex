@@ -9,4 +9,3 @@ export const fetchPokemonData = async () => {
     return [];
   }
 };
-//poke api

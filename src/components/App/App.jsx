@@ -10,25 +10,27 @@ import axios from "axios";
 import { register, login, checkToken, updateProfile } from "../../utils/auth";
 import "./App.css";
 
-const fetchPokemonWithCache = async (type, searchTerm, page) => {
+const fetchPokemonWithCache = (type, searchTerm, page) => {
   const cacheKey = `${type}-${searchTerm}-${page}`;
   const cachedData = localStorage.getItem(cacheKey);
 
   if (cachedData) {
-    return JSON.parse(cachedData);
+    return Promise.resolve(JSON.parse(cachedData));
   }
 
-  try {
-    const response = await axios.get("http://localhost:3001/api/pokemon", {
+  return axios
+    .get("http://localhost:3001/api/pokemon", {
       params: { type, search: searchTerm, page },
+    })
+    .then((response) => {
+      const data = response.data;
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+      return data;
+    })
+    .catch((error) => {
+      console.error("Failed to fetch Pokémon data:", error);
+      return null;
     });
-    const data = response.data;
-    localStorage.setItem(cacheKey, JSON.stringify(data));
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch Pokémon data:", error);
-    return null;
-  }
 };
 
 function App() {
@@ -63,12 +65,17 @@ function App() {
   const totalPages = Math.ceil(totalResults / 50);
 
   useEffect(() => {
-    async function fetchCharacters() {
-      const data = await fetchPokemonWithCache(selectedType, searchTerm, page);
-      if (data) {
-        setCharacters(data.pokemon);
-        setTotalResults(data.totalResults);
-      }
+    function fetchCharacters() {
+      fetchPokemonWithCache(selectedType, searchTerm, page)
+        .then((data) => {
+          if (data) {
+            setCharacters(data.pokemon);
+            setTotalResults(data.totalResults);
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch Pokémon data:", error);
+        });
     }
     fetchCharacters();
   }, [selectedType, searchTerm, page]);
@@ -111,20 +118,23 @@ function App() {
       .catch((error) => console.error("Registration failed:", error));
   };
 
-  const handleLogin = async (credentials) => {
-    try {
-      const res = await login(credentials);
-      localStorage.setItem("jwt", res.token);
-      setToken(res.token);
-      const userData = await checkToken(res.token);
-      setCurrentUser(userData);
-      setIsLoggedIn(true);
-      closeLoginModal();
-    } catch (error) {
-      const errorMessage = error.message || "Incorrect email or password";
-      console.log("Login failed:", errorMessage);
-      throw new Error(errorMessage);
-    }
+  const handleLogin = (credentials) => {
+    return login(credentials)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
+        setToken(res.token);
+        return checkToken(res.token);
+      })
+      .then((userData) => {
+        setCurrentUser(userData);
+        setIsLoggedIn(true);
+        closeLoginModal();
+      })
+      .catch((error) => {
+        const errorMessage = error.message || "Incorrect email or password";
+        console.log("Login failed:", errorMessage);
+        throw new Error(errorMessage);
+      });
   };
 
   const handleLogout = () => {

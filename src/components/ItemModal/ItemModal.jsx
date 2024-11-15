@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import defaultImage from "../../assets/pokemon-unavailable.png";
 import "./ItemModal.css";
 
-//item modal
 const ItemModal = ({ isOpen, onClose, character }) => {
   useEffect(() => {
     const handleEscClose = (e) => {
