@@ -22,21 +22,22 @@
 .modal__content {
   background-color: #fff;
   border-radius: 20px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
-  padding: 28px;
+  padding: 10px;
   box-sizing: border-box;
   position: relative;
 }
 
 .modal__title {
-  font-family: "Cabinet-Bold", sans-serif;
+  font-family: "Cabinet-Bold", "Arial", sans-serif;
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
 }
+
 .modal__label {
-  font-family: "Cabinet-Medium", sans-serif;
+  font-family: "Cabinet-Medium", "Arial", sans-serif;
   font-size: 14px;
   line-height: 1.2;
 }
@@ -57,12 +58,14 @@
 
 .modal__button-group {
   display: flex;
+  justify-content: flex-start;
   gap: 12px;
+  margin-top: 20px;
 }
 
 .modal__save-button,
 .modal__secondary-button {
-  font-family: "Cabinet-Bold", sans-serif;
+  font-family: "Cabinet-Bold", "Arial", sans-serif;
   border-radius: 4px;
   border: none;
   padding: 8px 16px;

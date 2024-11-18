@@ -44,6 +44,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
 
   return (
     <ModalWithForm
+      name="login"
       modalTitle="Log In"
       buttonText="Log In"
       secondaryButtonText="or Sign Up"
@@ -60,7 +61,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
           type="email"
           id="loginModal-email"
           name="email"
-          placeholder="Email"
+          placeholder="Enter your email"
           value={values.email || ""}
           onChange={handleInputChange}
           required
@@ -87,7 +88,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToSignUp }) => {
           type="password"
           id="loginModal-password"
           name="password"
-          placeholder="Password"
+          placeholder="Enter your password"
           value={values.password || ""}
           onChange={handleInputChange}
           required

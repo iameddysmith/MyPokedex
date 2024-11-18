@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 230px;
   padding: 16px;
-  font-family: "Cabinet-Bold", sans-serif;
+  font-family: "Cabinet-Bold", "Arial", sans-serif;
 }
 
 .sidebar__title {
@@ -24,9 +24,14 @@
   padding: 8px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar__filter-button--active {
+.sidebar__filter-button:hover {
+  background-color: #e0e0e0;
+}
+
+.sidebar__filter-button_active {
   background-color: #3d7dca;
   color: #fff;
 }

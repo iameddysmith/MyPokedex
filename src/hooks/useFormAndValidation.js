@@ -7,11 +7,10 @@ export function useFormAndValidation(formRef, extraValidityCheck = () => true) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const trimmedValue = typeof value === "string" ? value.trim() : value;
 
     setValues((prevValues) => ({
       ...prevValues,
-      [name]: trimmedValue,
+      [name]: value,
     }));
 
     setErrors((prevErrors) => ({
@@ -20,17 +19,15 @@ export function useFormAndValidation(formRef, extraValidityCheck = () => true) {
     }));
 
     const formValidity = formRef.current?.checkValidity();
-    const hasNoSpaceOnlyValues = Object.entries(values).every(
-      ([fieldName, fieldValue]) => {
-        if (typeof fieldValue !== "string") return true;
-        if (fieldName === name) return trimmedValue !== "";
-        return fieldValue.trim() !== "";
-      }
-    );
+    const noEmptyFields = Object.entries({
+      ...values,
+      [name]: value,
+    }).every(([fieldName, fieldValue]) => {
+      if (fieldName === name) return value.trim() !== "";
+      return typeof fieldValue === "string" ? fieldValue.trim() !== "" : true;
+    });
 
-    setIsValid(
-      formValidity && hasNoSpaceOnlyValues && extraValidityCheck(values)
-    );
+    setIsValid(formValidity && noEmptyFields && extraValidityCheck(values));
   };
 
   const resetForm = useCallback(
@@ -45,15 +42,10 @@ export function useFormAndValidation(formRef, extraValidityCheck = () => true) {
   useEffect(() => {
     if (formRef.current) {
       const formValidity = formRef.current.checkValidity();
-      const hasNoSpaceOnlyValues = Object.entries(values).every(
-        ([, fieldValue]) => {
-          if (typeof fieldValue !== "string") return true;
-          return fieldValue.trim() !== "";
-        }
-      );
-      setIsValid(
-        formValidity && hasNoSpaceOnlyValues && extraValidityCheck(values)
-      );
+      const noEmptyFields = Object.entries(values).every(([, fieldValue]) => {
+        return typeof fieldValue === "string" ? fieldValue.trim() !== "" : true;
+      });
+      setIsValid(formValidity && noEmptyFields && extraValidityCheck(values));
     }
   }, [values, extraValidityCheck, formRef]);
 

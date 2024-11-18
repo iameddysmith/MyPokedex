@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "../Header/Header";
 import Sidebar from "../SideBar/SideBar";
 import CharacterSection from "../CharacterSection/CharacterSection";
@@ -6,32 +7,12 @@ import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
-import axios from "axios";
-import { register, login, checkToken, updateProfile } from "../../utils/auth";
+import Profile from "../Profile/Profile";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import { fetchPokemonWithCache } from "../../utils/api";
+import { register, login, checkToken } from "../../utils/auth";
+import Preloader from "../Preloader/Preloader";
 import "./App.css";
-
-const fetchPokemonWithCache = (type, searchTerm, page) => {
-  const cacheKey = `${type}-${searchTerm}-${page}`;
-  const cachedData = localStorage.getItem(cacheKey);
-
-  if (cachedData) {
-    return Promise.resolve(JSON.parse(cachedData));
-  }
-
-  return axios
-    .get("http://localhost:3001/api/pokemon", {
-      params: { type, search: searchTerm, page },
-    })
-    .then((response) => {
-      const data = response.data;
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      return data;
-    })
-    .catch((error) => {
-      console.error("Failed to fetch Pokémon data:", error);
-      return null;
-    });
-};
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -45,6 +26,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -55,7 +37,7 @@ function App() {
           setToken(jwt);
           setIsLoggedIn(true);
         })
-        .catch((err) => {
+        .catch(() => {
           localStorage.removeItem("jwt");
           setIsLoggedIn(false);
         });
@@ -65,18 +47,29 @@ function App() {
   const totalPages = Math.ceil(totalResults / 50);
 
   useEffect(() => {
-    function fetchCharacters() {
-      fetchPokemonWithCache(selectedType, searchTerm, page)
-        .then((data) => {
-          if (data) {
-            setCharacters(data.pokemon);
-            setTotalResults(data.totalResults);
-          }
-        })
-        .catch((error) => {
-          console.error("Failed to fetch Pokémon data:", error);
-        });
-    }
+    const fetchCharacters = async () => {
+      try {
+        const data = await fetchPokemonWithCache(
+          selectedType,
+          searchTerm,
+          page
+        );
+        if (data) {
+          setCharacters(data.pokemon);
+          setTotalResults(data.totalResults);
+        } else {
+          setCharacters([]);
+          setTotalResults(0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch Pokémon data:", error);
+        setCharacters([]);
+        setTotalResults(0);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
     fetchCharacters();
   }, [selectedType, searchTerm, page]);
 
@@ -98,7 +91,10 @@ function App() {
   const openRegisterModal = () => setIsRegisterOpen(true);
   const closeRegisterModal = () => setIsRegisterOpen(false);
 
-  const openItemModal = (character) => setSelectedCharacter(character);
+  const openItemModal = (character) => {
+    setSelectedCharacter(character);
+  };
+
   const closeItemModal = () => setSelectedCharacter(null);
 
   const switchToSignUp = () => {
@@ -143,6 +139,10 @@ function App() {
     setIsLoggedIn(false);
   };
 
+  if (isInitialLoading) {
+    return <Preloader />;
+  }
+
   return (
     <div className="page">
       <Header
@@ -152,28 +152,50 @@ function App() {
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
       />
-      <div className="page__content">
-        <Sidebar
-          onTypeFilterChange={(type) => {
-            setSelectedType(type);
-            setPage(1);
-          }}
-        />
-        <CharacterSection
-          characters={characters}
-          handleCardClick={openItemModal}
-          searchTerm={searchTerm}
-          setSearchTerm={(term) => {
-            setSearchTerm(term);
-            setPage(1);
-          }}
-          handleNextPage={handleNextPage}
-          handlePreviousPage={handlePreviousPage}
-          page={page}
-          totalPages={totalPages}
-          onPageSelect={handlePageSelect}
-        />
-      </div>
+      <main className="page__content">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Sidebar
+                  onTypeFilterChange={(type) => {
+                    setSelectedType(type);
+                    setPage(1);
+                  }}
+                />
+                <CharacterSection
+                  characters={characters}
+                  handleCardClick={openItemModal}
+                  searchTerm={searchTerm}
+                  setSearchTerm={(term) => {
+                    setSearchTerm(term);
+                    setPage(1);
+                  }}
+                  handleNextPage={handleNextPage}
+                  handlePreviousPage={handlePreviousPage}
+                  page={page}
+                  totalPages={totalPages}
+                  onPageSelect={handlePageSelect}
+                />
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile
+                  currentUser={currentUser}
+                  token={token}
+                  openItemModal={openItemModal}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
 
       <LoginModal
         isOpen={isLoginOpen}
@@ -193,6 +215,9 @@ function App() {
         <ItemModal
           isOpen={!!selectedCharacter}
           character={selectedCharacter}
+          token={token}
+          isLoggedIn={isLoggedIn}
+          isProfileView={window.location.pathname === "/profile"}
           onClose={closeItemModal}
         />
       )}

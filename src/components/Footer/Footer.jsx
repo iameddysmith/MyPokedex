@@ -3,15 +3,11 @@ import "./Footer.css";
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer__text-developer">
-        <p>Developed by Eddy Smith | 2024</p>
-      </div>
-      <div className="footer__text-disclaimer">
-        <p>
-          Pokémon is a trademark of Nintendo, Creatures, Game Freak, and The
-          Pokémon Company.
-        </p>
-      </div>
+      <p className="footer__developer">Developed by Eddy Smith | 2024</p>
+      <p className="footer__disclaimer">
+        Pokémon is a trademark of Nintendo, Creatures, Game Freak, and The
+        Pokémon Company.
+      </p>
     </footer>
   );
 }

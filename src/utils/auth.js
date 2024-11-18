@@ -1,24 +1,34 @@
 import { BASE_URL } from "../utils/constants";
 
-const checkResponse = (response) => {
+export const checkResponse = (response) => {
   if (!response.ok) {
     return Promise.reject(`Error: ${response.status}`);
   }
   return response.json();
 };
 
-// Register
-export const register = ({ name, avatar, email, password }) => {
-  return fetch(`${BASE_URL}/signup`, {
+// register
+export const register = (data) => {
+  return fetch("http://localhost:3001/api/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, avatar, email, password }),
-  }).then(checkResponse);
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((err) => Promise.reject(err));
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error("Registration failed:", error);
+      throw error;
+    });
 };
 
-// Login
+// login
 export const login = ({ email, password }) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
@@ -29,7 +39,7 @@ export const login = ({ email, password }) => {
   }).then(checkResponse);
 };
 
-// Check Token
+// check Token
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
@@ -40,7 +50,7 @@ export const checkToken = (token) => {
   }).then(checkResponse);
 };
 
-// Update Profile
+// update profile -- TO DO
 export const updateProfile = (updatedData, token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "PATCH",

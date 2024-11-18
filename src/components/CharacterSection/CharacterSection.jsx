@@ -23,36 +23,42 @@ function CharacterSection({
   };
 
   return (
-    <div className="character-section">
-      <div className="character-section__pagination-container">
+    <section className="character-section">
+      <div className="character-section__controls">
         <div className="character-section__pagination">
-          <button
-            className="pagination__button-previous"
-            onClick={handlePreviousPage}
-            disabled={page === 1}
-          >
-            <img src={prevIcon} alt="Previous Page" />
-          </button>
+          {handlePreviousPage && (
+            <button
+              className="character-section__pagination-button character-section__pagination-button--prev"
+              onClick={handlePreviousPage}
+              disabled={page === 1}
+            >
+              <img src={prevIcon} alt="Previous Page" />
+            </button>
+          )}
           {generatePageNumbers().map((pageNumber) => (
             <button
               key={pageNumber}
-              className={`pagination__button ${
-                page === pageNumber ? "active" : ""
+              className={`character-section__pagination-page ${
+                page === pageNumber
+                  ? "character-section__pagination-page--active"
+                  : ""
               }`}
               onClick={() => onPageSelect(pageNumber)}
             >
               {pageNumber}
             </button>
           ))}
-          <button
-            className="pagination__button-next"
-            onClick={handleNextPage}
-            disabled={page === totalPages}
-          >
-            <img src={nextIcon} alt="Next Page" />
-          </button>
+          {handleNextPage && (
+            <button
+              className="character-section__pagination-button character-section__pagination-button--next"
+              onClick={handleNextPage}
+              disabled={page === totalPages}
+            >
+              <img src={nextIcon} alt="Next Page" />
+            </button>
+          )}
         </div>
-        <div className="character-section__search-container">
+        <div className="character-section__search">
           <input
             type="text"
             placeholder="Search Pokémon"
@@ -63,24 +69,29 @@ function CharacterSection({
           {searchTerm && (
             <button
               onClick={clearSearch}
-              className="character-section__clear-button"
+              className="character-section__search-clear"
             >
               ×
             </button>
           )}
         </div>
       </div>
-
-      <ul className="character-section__list">
-        {characters.map((character) => (
-          <CharacterCard
-            key={character.id}
-            character={character}
-            onCardClick={() => handleCardClick(character)}
-          />
-        ))}
-      </ul>
-    </div>
+      {characters.length === 0 ? (
+        <p className="character-section__message">
+          No Pokémon found matching your criteria.
+        </p>
+      ) : (
+        <ul className="character-section__list">
+          {characters.map((character) => (
+            <CharacterCard
+              key={character.id || character._id || character.name}
+              character={character}
+              onCardClick={() => handleCardClick(character)}
+            />
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 

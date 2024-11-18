@@ -9,14 +9,14 @@
 }
 
 .character-card__image {
-  width: 96x;
+  width: 96px;
   height: 96px;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .character-card__name {
-  margin-top: 1px;
+  margin-top: 4px;
   color: #333;
   font-size: 12px;
   text-transform: capitalize;

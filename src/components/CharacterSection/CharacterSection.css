@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Cabinet-Bold", sans-serif;
+  font-family: "Cabinet-Bold", "Arial", sans-serif;
 }
 
-.character-section__pagination-container {
+.character-section__controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,10 +18,20 @@
 .character-section__pagination {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
-.pagination__button {
+.character-section__pagination-button {
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.character-section__pagination-button:hover {
+  opacity: 0.5;
+}
+
+.character-section__pagination-page {
   padding: 2px 6px;
   border: none;
   cursor: pointer;
@@ -30,11 +40,11 @@
   font-size: 10px;
 }
 
-.pagination__button:hover {
+.character-section__pagination-page:hover {
   background-color: #e0e0e0;
 }
 
-.pagination__button.active {
+.character-section__pagination-page--active {
   font-weight: bold;
   background-color: rgba(61, 125, 202, 0.2);
   color: #3d7dca;
@@ -42,22 +52,7 @@
   font-size: 16px;
 }
 
-.pagination__button-next,
-.pagination__button-previous {
-  border: none;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  width: 100%;
-  height: auto;
-}
-
-.pagination__button-next:hover,
-.pagination__button-previous:hover {
-  opacity: 0.5;
-}
-
-.character-section__search-container {
+.character-section__search {
   display: flex;
   align-items: center;
   position: relative;
@@ -73,21 +68,19 @@
   font-size: 14px;
   width: 100%;
   max-width: 250px;
-  transition: none;
 }
 
-.character-section__clear-button {
-  position: absolute;
-  right: 18px;
+.character-section__search-clear {
+  position: relative;
+  right: 25px;
   background: none;
   border: none;
   font-size: 16px;
   color: #cc0000;
   cursor: pointer;
-  margin-bottom: 2px;
 }
 
-.character-section__clear-button:hover {
+.character-section__search-clear:hover {
   color: #000;
 }
 
@@ -102,7 +95,7 @@
   max-width: 1200px;
 }
 
-.character-section__no-results {
+.character-section__message {
   font-size: 16px;
   color: #888;
   margin-top: 16px;

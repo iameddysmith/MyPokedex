@@ -10,18 +10,22 @@ import "./RegisterModal.css";
 
 const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
   const formRef = useRef();
-  const avatarOptions = [avatar1, avatar2, avatar3, avatar4, avatar5];
-  const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0]);
-
-  const isAvatarSelected = () => selectedAvatar != null;
+  const avatarOptions = [
+    { src: avatar1, value: "/assets/avatar1.png" },
+    { src: avatar2, value: "/assets/avatar2.png" },
+    { src: avatar3, value: "/assets/avatar3.png" },
+    { src: avatar4, value: "/assets/avatar4.png" },
+    { src: avatar5, value: "/assets/avatar5.png" },
+  ];
+  const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0].value);
 
   const { values, handleChange, errors, isValid, resetForm } =
-    useFormAndValidation(formRef, isAvatarSelected);
+    useFormAndValidation(formRef);
 
   useEffect(() => {
     if (isOpen) {
       resetForm();
-      setSelectedAvatar(avatarOptions[0]);
+      setSelectedAvatar(avatarOptions[0].value);
     }
   }, [isOpen, resetForm]);
 
@@ -35,7 +39,7 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
   };
 
   const handleAvatarSelect = (avatar) => {
-    setSelectedAvatar(avatar);
+    setSelectedAvatar(avatar.value);
   };
 
   return (
@@ -50,18 +54,17 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
       isValid={isValid}
       ref={formRef}
     >
-      <label htmlFor="email" className="modal__label">
+      <label htmlFor="registerModal-email" className="modal__label">
         Email*
         <input
           type="email"
+          id="registerModal-email"
           name="email"
           placeholder="Email"
           value={values.email || ""}
           onChange={handleChange}
           required
-          className={`modal__form-input ${
-            errors.email ? "modal__form-input_type_error" : ""
-          }`}
+          className="modal__form-input"
         />
       </label>
       <span
@@ -72,19 +75,18 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
         {errors.email}
       </span>
 
-      <label htmlFor="password" className="modal__label">
+      <label htmlFor="registerModal-password" className="modal__label">
         Password*
         <input
           type="password"
+          id="registerModal-password"
           name="password"
           placeholder="Password"
           minLength="5"
           value={values.password || ""}
           onChange={handleChange}
           required
-          className={`modal__form-input ${
-            errors.password ? "modal__form-input_type_error" : ""
-          }`}
+          className="modal__form-input"
         />
       </label>
       <span
@@ -95,10 +97,11 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
         {errors.password}
       </span>
 
-      <label htmlFor="name" className="modal__label">
+      <label htmlFor="registerModal-name" className="modal__label">
         Name*
         <input
           type="text"
+          id="registerModal-name"
           name="name"
           placeholder="Name"
           minLength="2"
@@ -106,9 +109,7 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
           value={values.name || ""}
           onChange={handleChange}
           required
-          className={`modal__form-input ${
-            errors.name ? "modal__form-input_type_error" : ""
-          }`}
+          className="modal__form-input"
         />
       </label>
       <span
@@ -122,13 +123,15 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onSwitchToLogin }) => {
       <div className="modal__avatar-section">
         <p className="modal__label">Choose an Avatar*</p>
         <div className="modal__avatar-options">
-          {avatarOptions.map((avatar, index) => (
+          {avatarOptions.map((avatar) => (
             <img
-              key={index}
-              src={avatar}
-              alt={`Avatar ${index + 1}`}
+              key={avatar.value}
+              src={avatar.src}
+              alt="Avatar"
               className={`modal__avatar-option ${
-                selectedAvatar === avatar ? "modal__avatar-option-selected" : ""
+                selectedAvatar === avatar.value
+                  ? "modal__avatar-option_selected"
+                  : ""
               }`}
               onClick={() => handleAvatarSelect(avatar)}
             />

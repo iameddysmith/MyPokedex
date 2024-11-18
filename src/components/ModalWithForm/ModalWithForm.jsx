@@ -1,4 +1,5 @@
-import React, { useEffect, forwardRef } from "react";
+import React, { forwardRef } from "react";
+import { Modal } from "../Modal/Modal";
 import "./ModalWithForm.css";
 
 const ModalWithForm = forwardRef(
@@ -16,37 +17,9 @@ const ModalWithForm = forwardRef(
     },
     ref
   ) => {
-    useEffect(() => {
-      const handleEscClose = (e) => {
-        if (e.key === "Escape") {
-          onClose();
-        }
-      };
-
-      const handleClickOutside = (e) => {
-        if (e.target.closest(".modal__content") === null) {
-          onClose();
-        }
-      };
-
-      if (isOpen) {
-        document.addEventListener("keydown", handleEscClose);
-        document.addEventListener("mousedown", handleClickOutside);
-      }
-      return () => {
-        document.removeEventListener("keydown", handleEscClose);
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [isOpen, onClose]);
-
     return (
-      <div className={`modal ${isOpen ? "modal_open" : ""}`}>
+      <Modal name="form-modal" isOpen={isOpen} onClose={onClose}>
         <div className="modal__content">
-          <button
-            onClick={onClose}
-            className="modal__close_btn"
-            type="button"
-          />
           <h2 className="modal__title">{modalTitle}</h2>
           <form className="modal__form" onSubmit={onSubmit} ref={ref}>
             {children}
@@ -70,7 +43,7 @@ const ModalWithForm = forwardRef(
             </div>
           </form>
         </div>
-      </div>
+      </Modal>
     );
   }
 );

@@ -8,13 +8,13 @@
   margin: 0 auto;
   padding: 20px;
   opacity: 0.5;
-  font-family: "Cabinet-Medium", sans-serif;
+  font-family: "Cabinet-Medium", "Arial", sans-serif;
 }
 
-.footer__text-developer {
+.footer__developer {
   text-align: left;
 }
 
-.footer__text-disclaimer {
+.footer__disclaimer {
   text-align: right;
 }

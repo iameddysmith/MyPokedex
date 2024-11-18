@@ -31,38 +31,38 @@ function Header({
         <Link to="/" className="header__logo-link">
           <img src={headerLogo} alt="MyPokedex Logo" className="header__logo" />
         </Link>
-        <div className="header__user-actions">
+        <nav className="header__navigation">
           {isLoggedIn ? (
             <>
-              <Link to="/" className="header__btn">
+              <Link to="/" className="header__navigation-link">
                 View Pokedex
               </Link>
               <button
                 onClick={onLogout}
-                className="header__btn header__logout-btn"
+                className="header__button header__logout-button"
               >
                 Log Out
               </button>
-              <Link to="/profile" className="header__user-container">
-                <span className="header__user-name">{currentUser.name}</span>
+              <Link to="/profile" className="header__profile">
+                <span className="header__profile-name">{currentUser.name}</span>
                 <img
                   src={profileAvatar}
-                  alt={currentUser.name}
-                  className="header__avatar"
+                  alt={currentUser.name || "User Avatar"}
+                  className="header__profile-avatar"
                 />
               </Link>
             </>
           ) : (
             <>
-              <button onClick={onSignUpClick} className="header__btn">
+              <button onClick={onSignUpClick} className="header__button">
                 Sign Up
               </button>
-              <button onClick={onLoginClick} className="header__btn">
+              <button onClick={onLoginClick} className="header__button">
                 Log In
               </button>
             </>
           )}
-        </div>
+        </nav>
       </div>
     </header>
   );
